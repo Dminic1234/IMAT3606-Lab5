@@ -17,6 +17,23 @@ public:
 	void OnMessage(const std::string m) override
 	{
 		// e.g.	if (m == "rotateLeft")
+		if (m == "Rotate right")
+		{
+			rotate(0.1f, glm::vec3(0, 1, 0));
+		}
+		if (m == "Rotate left")
+		{
+			rotate(-0.1f, glm::vec3(0, 1, 0));
+		}
+		if (m == "Translate right")
+		{
+			translate(0.1f, 0.f, 0.f);
+		}
+		if (m == "Translate left")
+		{
+			translate(-0.1f, 0.f, 0.f);
+		}
+
 		
 	}
 	TransformComponent() : m_position(0), m_orientation(1,0,0,0), m_scale(1.0f) {}

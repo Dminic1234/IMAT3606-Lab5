@@ -1,6 +1,6 @@
 Number of cubes: 5
 Cube 1
-0 0 -5
+1 0 -5
 1 0 0 0
 1 1 1
 Cube 2

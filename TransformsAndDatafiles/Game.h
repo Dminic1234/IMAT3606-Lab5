@@ -20,6 +20,11 @@ public:
 private:
 	GameObject m_playerBackground;
 	GameObject m_playerCube;
-
+	GameObject m_playerCube2;
+	std::vector<GameObject> v_playerCubes;
+	std::string s;//stores line froma text file
+	float x, y, z;
+	std::vector<int> g_inVector;
+	int iNumElements;
 	Camera m_camera;
 };
