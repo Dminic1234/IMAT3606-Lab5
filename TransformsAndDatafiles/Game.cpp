@@ -31,29 +31,71 @@ void Game::update()
 }
 void Game::loadLevel(std::string textFile)
 {
-	std::ifstream inputFile;
-	std::getline(inputFile, s);
-	std::stringstream ss;
-	ss.str(s);
-	//ss.ignore(17); //ignore the first 17 chars to get number of cubes
-	ss >> iNumElements;
-	//Resize the vector to the correct size
-	g_inVector.resize(5);
-	ss.clear();
-
-	for (int i = 0; i < 5; i++)
+	//inputFile >> textFile;
+	inputFile.open(textFile);
+	if (inputFile.is_open())
 	{
-		//use a stringstream to get int values
-		getline(inputFile, s);
-		ss.clear();
+		std::getline(inputFile, s);
 		ss.str(s);
-		ss >> g_inVector[i];
-		for (std::vector<int>::const_iterator i = g_inVector.begin(); i != g_inVector.end(); ++i)
+		ss.ignore(17); //ignore the first 17 chars to get number of cubes
+		ss >> iNumElements;
+		v_playerCubes.resize(iNumElements);
+		//iNumElements *= 3;
+		std::cout << "Elements: " << iNumElements << std::endl;
+		//Resize the vector to the correct size
+		g_inVector.resize(iNumElements);
+		
+		ss.clear();
+
+		for (int i = 0; i < iNumElements; i++)
+		{
+
+			//use a stringstream to get int values
+			getline(inputFile, s);
+			ss.clear();
+			ss.str(s);
+			ss >> x >> y >> z;
+			pos = glm::vec3(x, y, z);
+			getline(inputFile, s);
+			ss.clear();
+			ss.str(s);
+			ss >> w >> x >> y >> z;
+			orient = glm::quat(w, x, y, z);
+			getline(inputFile, s);
+			ss.clear();
+			ss.str(s);
+			ss >> x >> y >> z;
+			scale = glm::vec3(x, y, z);
+			v_playerCubes[i].addComponent(new TransformComponent(pos, orient, scale));
+			/*if (iCounter == 0)
+			{
+				ss >> x >> y >> z;
+				std::cout << ss.str() << std::endl;
+				pos = glm::vec3(x, y, z);
+			}
+			if (iCounter == 1)
+			{
+				ss >> w >> x >> y >> z;
+				orient = glm::quat(w, x, y, z);
+			}
+			if (iCounter == 2)
+			{
+				ss >> x >> y >> z;
+				scale = glm::vec3(x, y, z);
+				v_playerCubes[i].addComponent(new TransformComponent(pos, orient, scale));
+				iCounter = -1;
+			}*/
+			//ss >> g_inVector[i];
+			
+			
+			//iCounter++;
+
+		}
+		/*for (std::vector<int>::const_iterator i = g_inVector.begin(); i != g_inVector.end(); ++i)
 		{
 			std::cout << *i << std::endl;
-		}
+		}*/
 	}
-
 
 	/*ss.str(s);
 	ss >> x >> y >> z;
@@ -78,7 +120,16 @@ void Game::render()
 	m_engineInterfacePtr->setCamera(&m_camera);
 
 	// draw the cube
-	m_engineInterfacePtr->drawCube(m_playerCube.getComponent<TransformComponent>()->getModelMatrix());
-	m_engineInterfacePtr->drawCube(m_playerCube2.getComponent<TransformComponent>()->getModelMatrix());
+	//m_engineInterfacePtr->drawCube(m_playerCube.getComponent<TransformComponent>()->getModelMatrix());
+	//m_engineInterfacePtr->drawCube(m_playerCube2.getComponent<TransformComponent>()->getModelMatrix());
+	/*for (int i = 0; i < 5; i++)
+	{
+		m_engineInterfacePtr->drawCube(g_inVector.front);
+	}*/
+	for (int i = 0; i < v_playerCubes.size(); i++)
+	{
+		m_engineInterfacePtr->drawCube(v_playerCubes[i].getComponent<TransformComponent>()->getModelMatrix());
+	}
+	
 }
 
